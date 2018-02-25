@@ -6,27 +6,17 @@ module.exports = function count(s, pairs) {
 
   s = String(s).split('').map( n => +n);
 
-  let j = 0;
-  while (JSON.stringify(divisorsN) !== JSON.stringify(divisorsK)) {
-    createDevisorsK(j, 2);
-
-    res.push(NOD(divisorsK, divisorsN));
-
-    // if (NOD(divisorsK, divisorsN) === 1) {
-    //   countK++;
-    // }
-
-    j++;
-    // console.log(JSON.stringify(divisorsK));
-    // console.log('countK = ', countK);   
-  }
-
-  for (key of s) {
-    if (key === 0) {
-      res.forEach( item => item !== 1 ? countK++ : null)
-    } else {
-      res.forEach((item, i) => item === 1 && i !== 0 ? countK++ : null)
+  let i = 0;
+  while (JSON.stringify(divisorsN) !== JSON.stringify(divisorsK) && i < 10000) {
+    for (let j = 0; j < s.length; j++) {
+      createDevisorsK(i+j, 2);
+      if ( s[j] === 1 && NOD(divisorsK, divisorsN) === 1) {
+        countK++;
+      } else if (s[j] === 0 && NOD(divisorsK, divisorsN) !== 1) {
+        countK++;
+      }
     }
+    i++;  
   }
 
   function NOD(divisorsK, divisorsN) {
