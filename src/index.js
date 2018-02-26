@@ -6,10 +6,10 @@ module.exports = function count(s, pairs) {
 
   s = String(s).split('').map( n => +n);
 
-  let i = 0;
+  let i = 1;
   while (JSON.stringify(divisorsN) !== JSON.stringify(divisorsK) && i < 10000) {
     for (let j = 0; j < s.length; j++) {
-      createDevisorsK(i+j, 2);
+      createDivisorsK(i+j);
       if ( s[j] === 1 && NOD(divisorsK, divisorsN) === 1) {
         countK++;
       } else if (s[j] === 0 && NOD(divisorsK, divisorsN) !== 1) {
@@ -22,25 +22,17 @@ module.exports = function count(s, pairs) {
   function NOD(divisorsK, divisorsN) {
     let res = 1;
     for (let key in divisorsN) {
-      res *= key in divisorsK ?  Math.pow(+key, Math.min(divisorsN[key], divisorsK[key])) : 1;
+      res *= key in divisorsK ? Math.pow(+key, Math.min(divisorsN[key], divisorsK[key])) : 1;
     }
     return res;
   }
 
-  function createDevisorsK(K, i) {
+  function createDivisorsK(K) {
     divisorsK = {};
-    if (K === 0) {
-      divisorsK = {0:1}
-    } else if (K === 1) {
-      divisorsK = {1:1}
-    } else {
-      while (K !== 1) {
-        if (K % i === 0) {
-          divisorsK[i] ? divisorsK[i]++ : divisorsK[i] = 1;
-          K /= i;
-        } else {
-          i++;
-        }
+    for (key in divisorsN) {
+      while (K % +key === 0) {
+        divisorsK[key] ? divisorsK[key]++ : divisorsK[key] = 1;
+        K /= +key;
       }
     }
   }
